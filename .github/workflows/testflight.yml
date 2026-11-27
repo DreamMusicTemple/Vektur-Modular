@@ -1,0 +1,153 @@
+# Vektur Modular → TestFlight
+#
+# Runs on GitHub's Xcode 27 image (iOS 27 / macOS 27 SDK, as TestFlight needs),
+# tests the engine and the Swift package, then archives, signs and uploads the
+# app + AUv3 to App Store Connect. No Mac needed.
+#
+# Start it: Actions → "TestFlight" → Run workflow (choose iOS, macOS or both),
+# or push a tag such as v1.0.0.
+#
+# Repository secrets (Settings → Secrets and variables → Actions):
+#   ASC_KEY_ID        App Store Connect API key ID (10 characters)
+#   ASC_ISSUER_ID     Issuer ID (UUID shown above the keys list)
+#   ASC_PRIVATE_KEY   the whole text of AuthKey_XXXXXXXXXX.p8, BEGIN/END lines included
+#   APPLE_TEAM_ID     your 10-character Team ID (Membership details)
+# The key needs the Admin role so Xcode can create the distribution
+# certificate and profiles itself ("cloud-managed signing").
+name: TestFlight
+
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: Which app to upload
+        type: choice
+        options: [iOS, macOS, both]
+        default: iOS
+      skip_tests:
+        description: Skip the test job (upload even if a test fails)
+        type: boolean
+        default: false
+  push:
+    tags: ["v*"]
+
+concurrency:
+  group: testflight-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  test:
+    name: Engine and package tests
+    if: ${{ !inputs.skip_tests }}
+    runs-on: xcode-27
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Toolchain
+        run: |
+          xcodebuild -version
+          xcrun --sdk iphoneos --show-sdk-version
+      - name: C++ engine tests (10 suites)
+        run: |
+          cmake -S DSPTests -B DSPTests/build -DCMAKE_BUILD_TYPE=Release
+          cmake --build DSPTests/build -j "$(sysctl -n hw.ncpu)"
+          cd DSPTests && for t in build/test_*; do [ -x "$t" ] && echo "▶ $t" && "$t" > /dev/null; done
+      - name: Swift package tests (includes the vDSP FFT self-test)
+        working-directory: Packages/VekturKit
+        run: swift test 2>&1 | tail -n 40
+
+  build:
+    name: Archive and upload (${{ matrix.platform }})
+    needs: test
+    if: ${{ always() && (needs.test.result == 'success' || needs.test.result == 'skipped') }}
+    runs-on: xcode-27
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: ${{ fromJSON(github.event_name == 'push' && '["iOS"]' || (inputs.platform == 'both' && '["iOS","macOS"]' || format('["{0}"]', inputs.platform))) }}
+    env:
+      SCHEME: VekturModular_${{ matrix.platform }}
+      DESTINATION: ${{ matrix.platform == 'iOS' && 'generic/platform=iOS' || 'generic/platform=macOS' }}
+      # Build numbers must rise with every upload; the run number does that.
+      BUILD_NUMBER: ${{ github.run_number }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check secrets
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          missing=""
+          for v in ASC_KEY_ID ASC_ISSUER_ID ASC_PRIVATE_KEY APPLE_TEAM_ID; do [ -n "${!v}" ] || missing="$missing $v"; done
+          if [ -n "$missing" ]; then echo "::error::Missing repository secrets:$missing (see the top of this file)"; exit 1; fi
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: API key and team
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/keys"
+          printf '%s\n' "$ASC_PRIVATE_KEY" > "$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8"
+          echo "KEY_PATH=$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8" >> "$GITHUB_ENV"
+          sed -i '' "s/^DEVELOPMENT_TEAM *=.*/DEVELOPMENT_TEAM = ${APPLE_TEAM_ID}/" Config/Shared.xcconfig
+          grep DEVELOPMENT_TEAM Config/Shared.xcconfig
+
+      - name: Generate the Xcode project
+        run: xcodegen generate
+
+      - name: Archive (Release; tools/check_sdk.sh enforces the 27 SDK)
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        run: |
+          set -o pipefail
+          xcodebuild archive \
+            -project VekturModular.xcodeproj -scheme "$SCHEME" -configuration Release \
+            -destination "$DESTINATION" -archivePath "$RUNNER_TEMP/VekturModular.xcarchive" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
+            | tee "$RUNNER_TEMP/archive.log" | grep -E "error:|warning: .*SDK|SDK check|ARCHIVE (SUCCEEDED|FAILED)" || true
+          test -d "$RUNNER_TEMP/VekturModular.xcarchive" || { echo "::error::Archive failed — see archive.log in the run's artifacts"; exit 1; }
+
+      - name: Export and upload to App Store Connect
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          set -o pipefail
+          sed "s/TEAM_ID_PLACEHOLDER/${APPLE_TEAM_ID}/" tools/ci/ExportOptions.plist > "$RUNNER_TEMP/ExportOptions.plist"
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/VekturModular.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
+            -exportPath "$RUNNER_TEMP/export" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            2>&1 | tee "$RUNNER_TEMP/export.log"
+          echo "### Uploaded ${{ matrix.platform }} build $BUILD_NUMBER (1.0.0) to App Store Connect" >> "$GITHUB_STEP_SUMMARY"
+          echo "It appears in TestFlight after Apple finishes processing (usually 5–30 minutes)." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Keep logs and symbols
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs-${{ matrix.platform }}-${{ github.run_number }}
+          path: |
+            ${{ runner.temp }}/archive.log
+            ${{ runner.temp }}/export.log
+            ${{ runner.temp }}/VekturModular.xcarchive/dSYMs
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Remove the key
+        if: always()
+        run: rm -rf "$RUNNER_TEMP/keys"

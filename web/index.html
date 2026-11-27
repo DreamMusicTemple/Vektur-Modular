@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vektur Modular — web test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600;700&family=Archivo:wght@400;500;600&display=swap">
+<style>
+/* VOICE: a working instrument in a studio at night — quiet, precise, tactile.
+   IDEA: a vintage modular cabinet: black-painted panels on brushed-aluminium rails in a tolex case.
+   PICTURE: the rack itself, filling the screen, with patch cables drooping across the jacks.
+   COLOUR and TYPE: panel black, silkscreen white, aluminium grey, cream meter faces, red/green lamps; Archivo Narrow legends.
+   LAYOUT: transport rail on top, cabinet rows in the middle (scroll sideways on small screens), performance keyboard docked below. */
+:root{color-scheme:dark;--room:#121110;--tolex:#0b0b0b;--panel:#161616;--panel2:#1d1d1d;--legend:#f1f0ea;--legend2:#a9a8a2;--alu:#b9bbbd;--alu2:#7d8083;
+  --cream:#efe6cf;--red:#ff3b2f;--green:#3fdd84;--amber:#ffb340;--wear:0.35;--hp:22px;--rail:26px;
+  --legend-ink:color-mix(in srgb,var(--legend) calc(100% - var(--wear)*18%),#d9c99a);--f:"Archivo Narrow","Arial Narrow",Arial,sans-serif;--ui:"Archivo",system-ui,sans-serif}
+:root[data-theme=light]{--room:#2a2826}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0;height:100%}
+body{background:radial-gradient(120% 80% at 50% 0%,#24221f 0%,var(--room) 60%,#080807 100%);color:var(--legend);font:15px/1.4 var(--ui);overflow-x:clip;-webkit-tap-highlight-color:transparent;user-select:none}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+
+/* Transport rail */
+.top{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;padding:8px max(2vw,10px);
+  background:linear-gradient(#cfd1d3,#9fa2a5 48%,#8c8f92 52%,#b3b5b8),repeating-linear-gradient(90deg,rgba(255,255,255,.08) 0 1px,transparent 1px 3px);
+  background-blend-mode:overlay;color:#121212;box-shadow:0 2px 0 #3a3a3a,0 6px 18px rgba(0,0,0,.6)}
+.brand{font:700 18px/1 var(--f);letter-spacing:.06em;white-space:nowrap}
+.brand small{display:block;font:500 11px/1.2 var(--f);letter-spacing:.04em;color:#333}
+.tgroup{display:flex;align-items:center;gap:8px}
+.tbtn{min-height:40px;min-width:44px;padding:0 12px;border-radius:5px;border:1px solid #444;background:linear-gradient(#2a2a2a,#121212);color:var(--legend);font:600 13px var(--f);letter-spacing:.04em;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.tbtn[aria-pressed=true]{background:linear-gradient(#3a1512,#1a0806);border-color:#7d2a22}
+.tbtn .lamp{width:9px;height:9px;border-radius:50%;background:#3b1210;box-shadow:inset 0 1px 1px rgba(0,0,0,.8)}
+.tbtn[aria-pressed=true] .lamp,.lamp.on{background:var(--red);box-shadow:0 0 8px var(--red),0 0 2px #fff inset}
+.lamp.g.on{background:var(--green);box-shadow:0 0 8px var(--green)}
+.tfield{display:flex;align-items:center;gap:6px;font:600 12px var(--f)}
+.tfield input[type=number],.tfield select{height:36px;border-radius:4px;border:1px solid #555;background:#141414;color:var(--legend);padding:0 6px;font:500 15px var(--ui)}
+.tfield input[type=number]{width:68px}
+.tfield input[type=range]{width:96px;accent-color:#222}
+.readout{font:500 13px var(--ui);font-variant-numeric:tabular-nums;background:#0e0e0e;color:#ffb340;padding:6px 9px;border-radius:3px;min-width:76px;text-align:center;box-shadow:inset 0 1px 3px #000}
+nav.tabs{display:flex;flex-wrap:wrap;gap:4px;margin-left:auto}
+nav.tabs a{flex:none;font:600 13px var(--f);letter-spacing:.04em;color:#151515;text-decoration:none;padding:9px 11px;border-radius:4px;min-height:40px;display:inline-flex;align-items:center}
+nav.tabs a[aria-current=page]{background:#151515;color:var(--legend)}
+
+.brandrow{display:flex;align-items:center;gap:10px}
+.logo{width:44px;height:44px;flex:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,.4))}
+.hidekeys{position:absolute;top:-30px;right:12px;width:44px;height:28px;border:1px solid #444;border-bottom:0;border-radius:6px 6px 0 0;background:#1d1d1d;color:var(--legend);cursor:pointer}
+.showkeys{position:fixed;right:12px;bottom:0;z-index:30;min-height:36px;padding:0 14px;border:1px solid #555;border-bottom:0;border-radius:6px 6px 0 0;background:#1d1d1d;color:var(--legend);font:600 13px var(--f);cursor:pointer}
+body.nokeys .dock{display:none}body.nokeys main{padding-bottom:60px}
+.popbtn{display:block;margin:14px auto 0;min-height:44px;padding:0 9px;white-space:nowrap;font-size:12px;letter-spacing:.3px}
+dialog.pop{padding:0;border:0;background:transparent;max-width:min(92vw,560px)}
+dialog.pop::backdrop{background:rgba(0,0,0,.55);backdrop-filter:blur(2px)}
+.poppanel{position:relative;padding-top:26px!important;background:var(--panel,#1c1c1c) linear-gradient(180deg,rgba(255,255,255,.05),rgba(0,0,0,.2));border-radius:6px;padding:16px 18px 18px;box-shadow:0 18px 50px rgba(0,0,0,.8),inset 0 0 0 1px rgba(255,255,255,.06);color:var(--legend,#eee)}
+.poppanel .knobs{display:flex;flex-wrap:wrap;gap:14px 22px;justify-content:center;margin:12px 0}
+.poppanel .switches{display:flex;flex-wrap:wrap;gap:12px 18px;justify-content:center}
+.poppanel .popclose{display:block;margin:16px auto 0;min-height:44px}
+.menu{position:fixed;z-index:70;min-width:230px;max-width:320px;max-height:60vh;overflow:auto;background:#f2ead2;color:#111;border-radius:6px;box-shadow:0 12px 40px rgba(0,0,0,.7);padding:6px;font:500 14px var(--ui)}
+.menu h4{margin:4px 8px 6px;font:700 12px var(--f);letter-spacing:.05em;color:#555;text-transform:lowercase}
+.menu button{display:flex;width:100%;align-items:center;gap:8px;min-height:40px;padding:6px 10px;border:0;background:none;text-align:left;border-radius:4px;cursor:pointer;color:#111;font:inherit}
+.menu button:hover,.menu button:focus-visible{background:#e0d4ae}
+.menu .sw8{width:16px;height:16px;border-radius:50%;flex:none;border:1px solid #0003}
+.menu hr{border:0;border-top:1px solid #0002;margin:4px 0}
+.jack.dragging .hole{box-shadow:0 0 0 3px var(--amber),0 0 14px var(--amber)}
+.jack.target .hole{box-shadow:0 0 0 3px var(--green),0 0 14px var(--green)}
+/* Cabinet */
+main{padding:14px max(1.5vw,8px) 250px}
+.screen{display:none}.screen.on{display:block}
+.cab{position:relative;margin:0 auto 18px;max-width:max-content;padding:0 18px;border-radius:10px;
+  background:var(--tolex) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .2 0 0 0 0 .2 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+  box-shadow:0 18px 40px rgba(0,0,0,.7),inset 0 0 0 1px #222}
+.cab h2{margin:0;padding:8px 4px 6px;font:600 12px/1 var(--f);letter-spacing:.08em;color:#8b8a86;text-transform:lowercase}
+.scroller{overflow-x:auto;scrollbar-color:#444 transparent;padding-bottom:2px}
+.rack{position:relative;display:flex;padding:var(--rail) 0;width:max-content;
+  background:linear-gradient(#000,#000) 0 0/100% 100% no-repeat}
+.rack::before,.rack::after{content:"";position:absolute;left:0;right:0;height:var(--rail);
+  background:radial-gradient(circle at 50% 50%,#d6d7d8 0 3.5px,#6e7174 4px,transparent 4.6px) 11px 50%/44px 100% repeat-x,
+    linear-gradient(#dfe0e1,#a7a9ab 35%,#8f9295 60%,#c4c6c8),repeating-linear-gradient(90deg,rgba(255,255,255,.12) 0 1px,rgba(0,0,0,.05) 1px 2px,transparent 2px 4px);
+  box-shadow:inset 0 -1px 0 rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.6)}
+.rack::before{top:0}.rack::after{bottom:0}
+.rack .dust{position:absolute;left:0;right:0;height:var(--rail);pointer-events:none;opacity:calc(var(--wear)*.9);z-index:3;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='26'%3E%3Cfilter id='d'%3E%3CfeTurbulence baseFrequency='.6' numOctaves='1' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 .25 0 0 0 0 .22 0 0 0 0 .18 0 0 0 -1.6 .7'/%3E%3C/filter%3E%3Crect width='200' height='26' filter='url(%23d)'/%3E%3C/svg%3E")}
+
+/* Panel */
+.panel{position:relative;width:calc(var(--w)*var(--hp));min-height:430px;padding:9px 8px 12px;display:flex;flex-direction:column;gap:8px;
+  background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,0) 30%,rgba(0,0,0,.18)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.7' numOctaves='2' seed='3'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='90' height='90' filter='url(%23p)'/%3E%3C/svg%3E"),var(--panel);
+  border-left:1px solid #2a2a2a;border-right:1px solid #050505;box-shadow:inset 1px 0 0 rgba(255,255,255,.04)}
+.panel .screw{position:absolute;width:9px;height:9px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#eee,#777 60%,#444);box-shadow:0 1px 1px #000}
+.panel .screw::after{content:"";position:absolute;left:1px;right:1px;top:4px;height:1px;background:#333;transform:rotate(var(--r,30deg))}
+.panel .s1{top:4px;left:5px}.panel .s2{top:4px;right:5px}.panel .s3{bottom:4px;left:5px}.panel .s4{bottom:4px;right:5px}
+.ptitle{font:700 15px/1 var(--f);letter-spacing:.09em;color:var(--legend-ink);text-align:center;padding:4px 0 0;text-transform:lowercase}
+.diagram{height:34px;width:100%}
+.diagram *{vector-effect:non-scaling-stroke}
+.bank{display:flex;justify-content:space-around;gap:2px;flex:1 1 auto;min-height:190px}
+.knobs{display:flex;flex-wrap:wrap;justify-content:space-around;gap:8px 2px}
+.switches{display:flex;flex-wrap:wrap;justify-content:space-around;gap:8px 4px}
+.jacks{display:flex;flex-wrap:wrap;justify-content:space-around;gap:8px 3px;margin-top:auto;padding-top:6px;border-top:1px solid #2b2b2b}
+.cap-l{font:500 10.5px/1.1 var(--f);color:var(--legend2);text-align:center;letter-spacing:.03em;text-transform:lowercase;max-width:74px;overflow-wrap:anywhere}
+.ctl{display:flex;flex-direction:column;align-items:center;gap:4px;touch-action:none;cursor:ns-resize;position:relative}
+.ctl.learn-target{outline:2px dashed var(--amber);outline-offset:3px;border-radius:4px}
+.ctl.mapped::after{content:"";position:absolute;top:-3px;right:-2px;width:6px;height:6px;border-radius:50%;background:var(--amber)}
+.val{position:absolute;bottom:100%;left:50%;transform:translate(-50%,-4px);background:#f2e9cf;color:#111;font:600 12px var(--ui);padding:2px 6px;border-radius:3px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .12s;z-index:9;font-variant-numeric:tabular-nums}
+.ctl:hover .val,.ctl.drag .val,.ctl:focus-visible .val{opacity:1}
+
+/* fader */
+.fader{--n:.5;width:30px;height:170px;position:relative}
+.fader .scale{position:absolute;inset:6px 0;background:repeating-linear-gradient(#bdbcb6 0 1px,transparent 1px 10%) 0 0/6px 100% no-repeat,repeating-linear-gradient(#bdbcb6 0 1px,transparent 1px 10%) 100% 0/6px 100% no-repeat;opacity:.75}
+.fader .slot{position:absolute;left:50%;top:0;bottom:0;width:7px;transform:translateX(-50%);background:#000;border-radius:3px;box-shadow:inset 0 1px 3px #000,0 0 0 1px #2c2c2c}
+.fader .capk{position:absolute;left:50%;width:26px;height:30px;transform:translateX(-50%);
+  background:linear-gradient(#fbfaf6,#e7e5dc 45%,#cfccc0);border-radius:3px;box-shadow:0 3px 4px rgba(0,0,0,.7),inset 0 -2px 0 rgba(0,0,0,.15)}
+.fader .capk::before{content:"";position:absolute;left:3px;right:3px;top:50%;height:2px;margin-top:-1px;background:#111}
+.fader .capk::after{content:"";position:absolute;inset:3px 4px;border-radius:40%;background:radial-gradient(rgba(120,110,80,.25),transparent 70%);opacity:var(--wear)}
+.fader .capk{bottom:calc(var(--n)*140px)}
+
+/* knob */
+.knob{width:38px;height:38px;position:relative}
+.knob.big{width:46px;height:46px}
+.knob .ticks{position:absolute;inset:-6px;border-radius:50%;background:repeating-conic-gradient(from -135deg,#bdbcb6 0 2deg,transparent 2deg 27deg);mask:radial-gradient(circle,transparent 62%,#000 63%,#000 70%,transparent 71%);-webkit-mask:radial-gradient(circle,transparent 62%,#000 63%,#000 70%,transparent 71%);clip-path:polygon(50% 50%,0 100%,0 0,100% 0,100% 100%)}
+.knob .skirt{position:absolute;inset:0;border-radius:50%;background:repeating-conic-gradient(#3a3a3a 0 6deg,#151515 6deg 12deg);box-shadow:0 3px 5px rgba(0,0,0,.8)}
+.knob .capk{position:absolute;inset:5px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fafafa,#c9cacb 35%,#8d8f91 75%,#6b6d70);box-shadow:inset 0 -1px 2px rgba(0,0,0,.5);transform:rotate(calc(-135deg + var(--n)*270deg))}
+.knob .capk::before{content:"";position:absolute;left:50%;top:2px;width:2px;height:42%;margin-left:-1px;background:#0c0c0c;border-radius:1px}
+.knob .capk::after{content:"";position:absolute;inset:0;border-radius:50%;background:repeating-linear-gradient(115deg,rgba(255,255,255,.14) 0 1px,transparent 1px 3px)}
+
+/* switches */
+.sw{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;min-width:44px}
+.lever{width:22px;height:34px;position:relative;border-radius:4px;background:radial-gradient(circle,#999 0 5px,#333 6px,#111 9px);box-shadow:inset 0 0 0 1px #333}
+.lever i{position:absolute;left:50%;top:50%;width:6px;height:17px;margin-left:-3px;border-radius:3px;background:linear-gradient(90deg,#8d8f91,#f4f4f4,#8d8f91);transform-origin:50% 100%;transform:translateY(-100%) rotate(var(--a,0deg));box-shadow:0 2px 2px rgba(0,0,0,.6)}
+.pos{display:flex;gap:4px;font:500 9.5px var(--f);color:var(--legend2);text-transform:lowercase}
+.pos b{font-weight:500}.pos b.on{color:var(--legend)}
+.rotary{width:40px;height:40px}
+.rotary-l{font:600 10.5px var(--f);color:var(--amber);text-align:center;max-width:78px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+
+/* jacks */
+.jack{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:crosshair;min-width:30px;position:relative;z-index:9;touch-action:none}
+.jack .hole{width:22px;height:22px;border-radius:50%;background:radial-gradient(circle,#000 0 5px,#2a2a2a 5.5px 6px,transparent 6.5px),conic-gradient(#f2f2f2,#8a8c8f,#e6e6e6,#717477,#f2f2f2);box-shadow:0 1px 2px #000}
+.jack.out .jl{background:var(--legend-ink);color:#111;padding:0 3px;border-radius:2px}
+.jack .jl{font:600 9.5px/1.3 var(--f);color:var(--legend2);text-transform:lowercase;white-space:nowrap}
+.jack.armed .hole{box-shadow:0 0 0 3px var(--amber),0 0 12px var(--amber)}
+.led{width:9px;height:9px;border-radius:50%;background:#3a0d0b;box-shadow:inset 0 1px 2px #000;margin:0 auto}
+.led.on{background:var(--red);box-shadow:0 0 10px var(--red),inset 0 0 2px #fff}
+.led.g{background:#0d2a19}.led.g.on{background:var(--green);box-shadow:0 0 10px var(--green)}
+.wear{position:absolute;inset:0;pointer-events:none;opacity:var(--wear);mix-blend-mode:screen}
+
+/* cables */
+svg.cables{position:absolute;left:0;top:0;pointer-events:none;overflow:visible;z-index:8}
+svg.cables path.flow{stroke-dasharray:2 14;pointer-events:none;stroke:#fff}
+svg.cables path{fill:none;stroke-linecap:round;pointer-events:stroke;cursor:pointer}
+svg.cables path.shadow{stroke:#000;opacity:.35;pointer-events:none}
+
+/* VU */
+.vu{width:120px;height:72px;border-radius:4px;background:linear-gradient(#f6eed8,#e5d9b9);box-shadow:inset 0 0 0 3px #111,inset 0 3px 10px rgba(0,0,0,.4);position:relative;overflow:hidden}
+.vu svg{position:absolute;inset:0;width:100%;height:100%}
+
+/* Keyboard dock */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:30;background:linear-gradient(#2a2a2a,#0f0f0f);border-top:3px solid #8f9295;box-shadow:0 -8px 24px rgba(0,0,0,.6);padding:8px max(1.5vw,8px) 10px;display:grid;grid-template-columns:auto auto minmax(0,1fr) auto;gap:10px;align-items:stretch}
+.wheel{width:34px;height:150px;border-radius:5px;background:#050505;box-shadow:inset 0 0 0 2px #333;position:relative;touch-action:none;cursor:ns-resize}
+.wheel i{position:absolute;left:3px;right:3px;height:30px;border-radius:4px;background:repeating-linear-gradient(#5a5a5a 0 2px,#2a2a2a 2px 5px);top:calc((1 - var(--n))*120px);box-shadow:0 0 0 1px #777}
+.dockside{display:flex;flex-direction:column;gap:6px;justify-content:space-between;font:600 11px var(--f);color:var(--legend2)}
+.keys{position:relative;height:150px;touch-action:none;overflow:hidden;border-radius:0 0 5px 5px}
+.key{position:absolute;top:0;bottom:0;border:1px solid #222;border-radius:0 0 5px 5px;background:linear-gradient(#e9e8e2,#fffefa 80%,#d8d6cc)}
+.key.b{background:linear-gradient(#2a2a2a,#050505);height:62%;bottom:auto;z-index:2;border-color:#000}
+.key.on{background:linear-gradient(#d7cfb5,#f0e8cc)}.key.b.on{background:linear-gradient(#555,#222)}
+.key small{position:absolute;bottom:6px;left:0;right:0;text-align:center;font:600 10px var(--f);color:#777}
+.chord{font:700 22px/1 var(--f);color:var(--amber);min-width:84px;text-align:center}
+.mini{font:500 12px var(--ui);color:var(--legend2)}
+.dock .tbtn{min-height:34px}
+
+/* Pages with tables/forms */
+.sheet{max-width:1180px;margin:0 auto 18px;background:var(--panel);border-radius:6px;padding:14px 16px;box-shadow:0 10px 30px rgba(0,0,0,.6),inset 0 0 0 1px #2a2a2a}
+.sheet h3{margin:0 0 10px;font:700 15px var(--f);letter-spacing:.08em;text-transform:lowercase}
+.sheet p{color:var(--legend2);max-width:70ch;margin:6px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px 14px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.matrix{width:100%;border-collapse:collapse;font-size:13px}
+.matrix td,.matrix th{padding:5px 6px;border-bottom:1px solid #2a2a2a;text-align:left;vertical-align:middle}
+.matrix th{font:600 11px var(--f);color:var(--legend2);letter-spacing:.05em;text-transform:lowercase}
+.matrix select,.sheet select,.sheet input[type=text],.sheet input[type=number],.sheet textarea{background:#0e0e0e;border:1px solid #3a3a3a;border-radius:4px;color:var(--legend);min-height:36px;padding:4px 6px;font-size:14px;max-width:100%}
+.sheet textarea{width:100%;min-height:110px;font-size:12px}
+.bar{height:6px;background:#0a0a0a;border-radius:3px;overflow:hidden;min-width:60px}.bar i{display:block;height:100%;background:var(--amber)}
+.note{font-size:12.5px;color:var(--legend2)}
+.toast{position:fixed;left:50%;bottom:190px;transform:translateX(-50%);background:#f2e9cf;color:#111;padding:9px 14px;border-radius:5px;font:600 13px var(--ui);z-index:50;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw}
+.toast.on{opacity:1}
+.splash{position:fixed;inset:0;z-index:60;display:grid;place-items:center;background:rgba(5,5,5,.86);backdrop-filter:blur(3px)}
+.splash .card{max-width:560px;margin:16px;background:var(--panel);border-radius:8px;padding:22px;box-shadow:0 20px 60px #000,inset 0 0 0 1px #333}
+.splash h1{margin:0 0 6px;font:700 32px/1.05 var(--f);letter-spacing:.04em}
+.splash p{color:var(--legend2);margin:8px 0}
+.power{margin-top:14px;min-height:48px;font-size:15px}
+@media (max-width:700px){.top{gap:6px 8px}.brand small{display:none}nav.tabs{margin-left:0;width:100%;overflow-x:auto;flex-wrap:nowrap}
+  nav.tabs a{white-space:nowrap;padding:8px 9px}
+  .dock{grid-template-columns:auto minmax(0,1fr);grid-template-areas:"w k" "o o" "r r";gap:6px;padding:6px 8px}
+  .dock>.dockside:nth-child(1){grid-area:w}.dock>.keys{grid-area:k}.dock>.dockside:nth-child(2){grid-area:o;flex-direction:row;flex-wrap:wrap;align-items:center}
+  .dock .dockside.r{grid-area:r;flex-direction:row;align-items:center;justify-content:space-between}.dock .vu{display:none}
+  .wheel{height:110px;width:28px}.wheel i{top:calc((1 - var(--n))*80px)}.keys{height:110px}.chord{font-size:18px;min-width:60px}main{padding-bottom:260px}.dock .tbtn{min-height:36px;padding:0 9px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brandrow"><img class="logo" src="logo-96.png" width="44" height="44" alt="DMT Cymatics"><div class="brand">VEKTUR MODULAR<small>version 1.0 · same engine as the app</small></div></div>
+  <div class="tgroup">
+    <button class="tbtn" id="power" aria-pressed="false"><span class="lamp"></span>power</button>
+    <button class="tbtn" id="play" aria-pressed="false"><span class="lamp"></span>play</button>
+    <button class="tbtn" id="rec" aria-pressed="false" title="Record the output to a WAV file"><span class="lamp"></span>rec</button>
+    <label class="tfield">tempo <input type="number" id="tempo" min="20" max="300" step="0.1" value="120"></label>
+    <label class="tfield">meter <select id="meter"><option>4/4</option><option>3/4</option><option>6/8</option><option>5/4</option><option>7/8</option></select></label>
+  </div>
+  <div class="tgroup">
+    <label class="tfield">wear <input type="range" id="wear" min="0" max="1" step="0.01" value="0.35" aria-label="Panel wear"></label>
+    <span class="readout" id="cpu" title="Engine load (share of the audio deadline)">— %</span>
+    <span class="readout" id="midiIn" title="MIDI input">midi —</span>
+    <button class="tbtn" id="panic" title="All sound off">panic</button>
+    <button class="tbtn" id="keysToggle" aria-pressed="true" aria-controls="dock" title="Show or hide the keyboard"><span class="lamp g on"></span>keyboard</button>
+  </div>
+  <nav class="tabs" aria-label="Screens">
+    <a href="#rack">rack</a><a href="#sequencer">sequencer</a><a href="#arp">arp · gen</a><a href="#effects">effects</a><a href="#matrix">matrix</a><a href="#midi">midi</a><a href="#presets">presets</a><a href="#about">about</a>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="screen" id="s-rack" aria-label="Rack"></section>
+  <section class="screen" id="s-sequencer" aria-label="Sequencer"></section>
+  <section class="screen" id="s-arp" aria-label="Arpeggiator and generative"></section>
+  <section class="screen" id="s-effects" aria-label="Effects"></section>
+  <section class="screen" id="s-matrix" aria-label="Modulation matrix"></section>
+  <section class="screen" id="s-midi" aria-label="MIDI"></section>
+  <section class="screen" id="s-presets" aria-label="Presets"></section>
+  <section class="screen" id="s-about" aria-label="About"></section>
+</main>
+
+<button class="showkeys" id="showKeys" hidden>show keyboard ▲</button>
+<div class="dock" id="dock">
+  <button class="hidekeys" id="hideKeys" aria-label="Hide keyboard" title="Hide keyboard">▼</button>
+  <div class="dockside">
+    <div class="row"><div><div class="wheel" id="bend" role="slider" aria-label="Pitch bend" tabindex="0" style="--n:.5"><i></i></div><div class="cap-l">bend</div></div>
+    <div><div class="wheel" id="modw" role="slider" aria-label="Mod wheel" tabindex="0" style="--n:0"><i></i></div><div class="cap-l">mod</div></div></div>
+  </div>
+  <div class="dockside">
+    <button class="tbtn" id="octDown" aria-label="Octave down">oct −</button>
+    <span class="readout" id="octave">C2–C5</span>
+    <button class="tbtn" id="octUp" aria-label="Octave up">oct +</button>
+    <button class="tbtn" id="hold" aria-pressed="false"><span class="lamp"></span>hold</button>
+  </div>
+  <div class="keys" id="keys" aria-label="Keyboard (also A–K on your computer keyboard)"></div>
+  <div class="dockside r">
+    <div class="chord" id="chord" aria-live="polite">—</div>
+    <label class="tfield">vel <input type="range" id="vel" min="1" max="127" value="100" aria-label="Velocity"></label>
+    <div class="row"><div class="vu" id="vuL" aria-label="Left level"></div><div class="vu" id="vuR" aria-label="Right level"></div></div>
+  </div>
+</div>
+
+<div class="splash" id="splash">
+  <div class="card">
+    <img src="logo-256.png" width="120" height="120" alt="DMT Cymatics logo" style="display:block;margin:0 auto 8px">
+    <h1>Vektur Modular</h1>
+    <p>This is the web test version. The synthesiser engine running here is the app's own C++ kernel, compiled to WebAssembly: the same oscillators, filters, envelopes, patching, modulation matrix, arpeggiator, sequencer, generative engine, 27 effects and MIDI engine as the iPad, iPhone, Mac and AUv3 builds.</p>
+    <p>Play with the on-screen keyboard, your computer keyboard (A W S E D F T G Y H U J K O L P) or a MIDI controller (browser permitting). Click an output jack and then an input jack to patch a cable; click a cable to remove it.</p>
+    <p class="note" id="bootMsg">Loading the engine…</p>
+    <button class="tbtn power" id="start" disabled><span class="lamp"></span>power on</button>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<script type="module" src="app.js"></script>
+</body>
+</html>

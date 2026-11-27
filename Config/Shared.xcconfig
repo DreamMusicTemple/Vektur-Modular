@@ -1,0 +1,16 @@
+// Shared.xcconfig — the only file you need to edit to sign and build.
+
+// Your Apple Developer Team ID (Xcode ▸ Settings ▸ Accounts, or developer.apple.com ▸ Membership).
+DEVELOPMENT_TEAM =
+
+// Reverse-DNS prefix you own. The app becomes $(VK_BUNDLE_ID_PREFIX).vekturmodular
+// and the AUv3 $(VK_BUNDLE_ID_PREFIX).vekturmodular.au (extension IDs must be
+// prefixed by the containing app's ID). Change BEFORE the first TestFlight upload;
+// it is permanent afterwards.
+VK_BUNDLE_ID_PREFIX = com.dmtcymatics
+
+CODE_SIGN_STYLE = Automatic
+
+// Minimum SDK major version for Release (TestFlight / App Store) builds —
+// checked by tools/check_sdk.sh. iOS 27 / macOS 27 SDK = Xcode 27 or later.
+VK_MIN_SDK_MAJOR = 27

@@ -1,0 +1,671 @@
+{
+ "version": 1,
+ "hpWidth": 22,
+ "rows": [
+  {
+   "id": "sources",
+   "name": "sources",
+   "modules": [
+    {
+     "key": "vco1",
+     "rack": "vco1",
+     "title": "vco 1",
+     "diagram": "osc",
+     "sliders": [
+      "vco1.pulseWidth",
+      "vco1.fmAmount"
+     ],
+     "knobs": [
+      "vco1.coarse",
+      "vco1.fine",
+      "vco1.subLevel",
+      "vco1.startPhase"
+     ],
+     "switches": [
+      "vco1.wave",
+      "vco1.octave",
+      "vco1.subOctave",
+      "vco1.syncMode",
+      "vco1.fmMode",
+      "vco1.lowFreqMode",
+      "vco1.phaseReset"
+     ],
+     "popup": false,
+     "hp": 6
+    },
+    {
+     "key": "vco2",
+     "rack": "vco2",
+     "title": "vco 2",
+     "diagram": "osc",
+     "sliders": [
+      "vco2.pulseWidth",
+      "vco2.fmAmount"
+     ],
+     "knobs": [
+      "vco2.coarse",
+      "vco2.fine",
+      "vco2.startPhase"
+     ],
+     "switches": [
+      "vco2.wave",
+      "vco2.octave",
+      "vco2.syncMode",
+      "vco2.fmMode",
+      "vco2.lowFreqMode",
+      "vco2.phaseReset"
+     ],
+     "popup": false,
+     "hp": 6
+    },
+    {
+     "key": "vco3",
+     "rack": "vco3",
+     "title": "vco 3",
+     "diagram": "osc",
+     "sliders": [
+      "vco3.pulseWidth",
+      "vco3.fmAmount"
+     ],
+     "knobs": [
+      "vco3.coarse",
+      "vco3.fine",
+      "vco3.pitchModAmount",
+      "vco3.startPhase"
+     ],
+     "switches": [
+      "vco3.wave",
+      "vco3.octave",
+      "vco3.syncMode",
+      "vco3.fmMode",
+      "vco3.lowFreqMode",
+      "vco3.phaseReset"
+     ],
+     "popup": false,
+     "hp": 6
+    },
+    {
+     "key": "noise",
+     "rack": "noise",
+     "title": "noise",
+     "diagram": "noise",
+     "sliders": [
+      "noise.level"
+     ],
+     "knobs": [
+      "noise.colour"
+     ],
+     "switches": [
+      "noise.type"
+     ],
+     "popup": false,
+     "hp": 4
+    },
+    {
+     "key": "ringMod",
+     "rack": "ringMod",
+     "title": "ring mod",
+     "diagram": "ring",
+     "sliders": [
+      "ringMod.level"
+     ],
+     "knobs": [
+      "ringMod.carrierLeak"
+     ],
+     "switches": [],
+     "popup": false,
+     "hp": 4
+    },
+    {
+     "key": "mixer",
+     "rack": "mixer",
+     "title": "mix",
+     "diagram": "mixer",
+     "sliders": [
+      "vco1.level",
+      "vco2.level",
+      "vco3.level",
+      "vco1.subLevel",
+      "noise.level",
+      "ringMod.level"
+     ],
+     "knobs": [],
+     "switches": [],
+     "popup": false,
+     "hp": 14
+    }
+   ]
+  },
+  {
+   "id": "voice",
+   "name": "filters · amplifiers · envelopes",
+   "modules": [
+    {
+     "key": "vcfA",
+     "rack": "vcfA",
+     "title": "vcf a",
+     "diagram": "filter",
+     "sliders": [
+      "vcfA.cutoff",
+      "vcfA.resonance",
+      "vcfA.envAmount"
+     ],
+     "knobs": [
+      "vcfA.drive",
+      "vcfA.keyTrack",
+      "vcfA.shAmount",
+      "vcfA.vco3Amount"
+     ],
+     "switches": [
+      "vcfA.mode",
+      "global.filterRouting"
+     ],
+     "popup": false,
+     "hp": 8
+    },
+    {
+     "key": "vcfB",
+     "rack": "vcfB",
+     "title": "vcf b",
+     "diagram": "ladder",
+     "sliders": [
+      "vcfB.cutoff",
+      "vcfB.resonance",
+      "vcfB.envAmount"
+     ],
+     "knobs": [
+      "vcfB.drive",
+      "vcfB.keyTrack",
+      "vcfB.shAmount",
+      "vcfB.vco3Amount"
+     ],
+     "switches": [],
+     "popup": false,
+     "hp": 8
+    },
+    {
+     "key": "eg1",
+     "rack": "eg1",
+     "title": "env 1",
+     "diagram": "env",
+     "sliders": [
+      "eg1.attack",
+      "eg1.decay",
+      "eg1.sustain",
+      "eg1.release"
+     ],
+     "knobs": [
+      "eg1.velocity",
+      "eg1.pitchAmount"
+     ],
+     "switches": [
+      "eg1.curve",
+      "eg1.retrigger",
+      "eg1.loop"
+     ],
+     "popup": false,
+     "hp": 10
+    },
+    {
+     "key": "eg2",
+     "rack": "eg2",
+     "title": "env 2",
+     "diagram": "env",
+     "sliders": [
+      "eg2.attack",
+      "eg2.decay",
+      "eg2.sustain",
+      "eg2.release"
+     ],
+     "knobs": [
+      "eg2.velocity"
+     ],
+     "switches": [
+      "eg2.curve",
+      "eg2.retrigger",
+      "eg2.loop"
+     ],
+     "popup": false,
+     "hp": 10
+    },
+    {
+     "key": "vca",
+     "rack": "vca",
+     "title": "vca",
+     "diagram": "amp",
+     "sliders": [
+      "vca.initialGain"
+     ],
+     "knobs": [
+      "vca.velocity",
+      "vca.saturation"
+     ],
+     "switches": [
+      "vca.response"
+     ],
+     "popup": false,
+     "hp": 4
+    }
+   ]
+  },
+  {
+   "id": "modulation",
+   "name": "modulation · control",
+   "modules": [
+    {
+     "key": "lfo1",
+     "rack": "lfo1",
+     "title": "lfo 1",
+     "diagram": "lfo",
+     "sliders": [
+      "lfo1.rate",
+      "lfo1.level"
+     ],
+     "knobs": [
+      "lfo1.delay",
+      "lfo1.phase"
+     ],
+     "switches": [
+      "lfo1.shape",
+      "lfo1.sync",
+      "lfo1.tempoSync"
+     ],
+     "popup": false,
+     "hp": 6
+    },
+    {
+     "key": "lfo2",
+     "rack": "lfo2",
+     "title": "lfo 2",
+     "diagram": "lfo",
+     "sliders": [
+      "lfo2.rate",
+      "lfo2.level"
+     ],
+     "knobs": [
+      "lfo2.delay",
+      "lfo2.phase"
+     ],
+     "switches": [
+      "lfo2.shape",
+      "lfo2.sync",
+      "lfo2.tempoSync"
+     ],
+     "popup": false,
+     "hp": 6
+    },
+    {
+     "key": "lfo3",
+     "rack": "lfo3",
+     "title": "lfo 3",
+     "diagram": "lfo",
+     "sliders": [
+      "lfo3.rate",
+      "lfo3.level"
+     ],
+     "knobs": [
+      "lfo3.delay",
+      "lfo3.phase"
+     ],
+     "switches": [
+      "lfo3.shape",
+      "lfo3.sync",
+      "lfo3.tempoSync"
+     ],
+     "popup": false,
+     "hp": 6
+    },
+    {
+     "key": "sampleHold",
+     "rack": "sampleHold",
+     "title": "s/h",
+     "diagram": "sh",
+     "sliders": [
+      "sampleHold.rate"
+     ],
+     "knobs": [
+      "sampleHold.slew"
+     ],
+     "switches": [
+      "sampleHold.source"
+     ],
+     "popup": false,
+     "hp": 4
+    },
+    {
+     "key": "macro",
+     "rack": "",
+     "title": "macro",
+     "diagram": "macro",
+     "sliders": [
+      "macro.macro1",
+      "macro.macro2",
+      "macro.macro3",
+      "macro.macro4"
+     ],
+     "knobs": [],
+     "switches": [],
+     "popup": false,
+     "hp": 10
+    },
+    {
+     "key": "keyboard",
+     "rack": "keyboard",
+     "title": "keyboard ctrl",
+     "diagram": "keys",
+     "sliders": [
+      "global.glide"
+     ],
+     "knobs": [
+      "global.pitchBendRange",
+      "global.bendDown",
+      "global.unisonDetune"
+     ],
+     "switches": [
+      "global.voiceMode",
+      "global.notePriority",
+      "global.glideMode",
+      "global.unisonVoices",
+      "global.polyphony"
+     ],
+     "popup": true,
+     "hp": 4
+    }
+   ]
+  },
+  {
+   "id": "expanders",
+   "name": "expanders",
+   "modules": [
+    {
+     "key": "ota",
+     "rack": "ota",
+     "title": "ota vcf",
+     "diagram": "filter",
+     "sliders": [
+      "ota.cutoff",
+      "ota.resonance"
+     ],
+     "knobs": [
+      "ota.drive",
+      "ota.cv1Amount",
+      "ota.cv2Amount"
+     ],
+     "switches": [
+      "ota.mode"
+     ],
+     "popup": false,
+     "hp": 6
+    },
+    {
+     "key": "diodeLadder",
+     "rack": "diodeLadder",
+     "title": "diode vcf",
+     "diagram": "ladder",
+     "sliders": [
+      "diodeLadder.cutoff",
+      "diodeLadder.resonance"
+     ],
+     "knobs": [
+      "diodeLadder.drive",
+      "diodeLadder.cv1Amount",
+      "diodeLadder.cv2Amount"
+     ],
+     "switches": [],
+     "popup": false,
+     "hp": 6
+    },
+    {
+     "key": "transistorLadder",
+     "rack": "transistorLadder",
+     "title": "ladder vcf",
+     "diagram": "ladder",
+     "sliders": [
+      "transistorLadder.cutoff",
+      "transistorLadder.resonance"
+     ],
+     "knobs": [
+      "transistorLadder.drive",
+      "transistorLadder.cv1Amount",
+      "transistorLadder.cv2Amount"
+     ],
+     "switches": [],
+     "popup": false,
+     "hp": 6
+    },
+    {
+     "key": "vcbpf",
+     "rack": "vcbpf",
+     "title": "vc bpf",
+     "diagram": "filter",
+     "sliders": [
+      "vcbpf.centre",
+      "vcbpf.q"
+     ],
+     "knobs": [
+      "vcbpf.cv1Amount",
+      "vcbpf.cv2Amount",
+      "vcbpf.level"
+     ],
+     "switches": [],
+     "popup": false,
+     "hp": 6
+    },
+    {
+     "key": "comb",
+     "rack": "comb",
+     "title": "comb",
+     "diagram": "comb",
+     "sliders": [
+      "comb.frequency",
+      "comb.feedback"
+     ],
+     "knobs": [
+      "comb.damping",
+      "comb.mix",
+      "comb.cvAmount"
+     ],
+     "switches": [],
+     "popup": false,
+     "hp": 6
+    },
+    {
+     "key": "formant",
+     "rack": "formant",
+     "title": "formant",
+     "diagram": "formant",
+     "sliders": [
+      "formant.vowel",
+      "formant.shift"
+     ],
+     "knobs": [
+      "formant.resonance",
+      "formant.mix",
+      "formant.cvAmount"
+     ],
+     "switches": [],
+     "popup": false,
+     "hp": 6
+    },
+    {
+     "key": "filterBank",
+     "rack": "filterBank",
+     "title": "fixed bank",
+     "diagram": "bank",
+     "sliders": [
+      "filterBank.band1",
+      "filterBank.band2",
+      "filterBank.band3",
+      "filterBank.band4",
+      "filterBank.band5",
+      "filterBank.band6",
+      "filterBank.band7",
+      "filterBank.band8"
+     ],
+     "knobs": [
+      "filterBank.level"
+     ],
+     "switches": [],
+     "popup": false,
+     "hp": 18
+    },
+    {
+     "key": "vca2",
+     "rack": "vca2",
+     "title": "vca 2",
+     "diagram": "amp",
+     "sliders": [
+      "vca2.initialGain"
+     ],
+     "knobs": [
+      "vca2.cvAmount",
+      "vca2.saturation"
+     ],
+     "switches": [
+      "vca2.response"
+     ],
+     "popup": false,
+     "hp": 4
+    },
+    {
+     "key": "mixer4",
+     "rack": "mixer4",
+     "title": "mixer",
+     "diagram": "mixer",
+     "sliders": [
+      "mixer4.gain1",
+      "mixer4.gain2",
+      "mixer4.gain3",
+      "mixer4.gain4"
+     ],
+     "knobs": [
+      "mixer4.level"
+     ],
+     "switches": [],
+     "popup": false,
+     "hp": 10
+    },
+    {
+     "key": "slew",
+     "rack": "slew",
+     "title": "slew",
+     "diagram": "util",
+     "sliders": [
+      "slew.rise",
+      "slew.fall"
+     ],
+     "knobs": [],
+     "switches": [
+      "slew.mode"
+     ],
+     "popup": false,
+     "hp": 6
+    },
+    {
+     "key": "follower",
+     "rack": "follower",
+     "title": "env follow",
+     "diagram": "util",
+     "sliders": [
+      "follower.attack",
+      "follower.release"
+     ],
+     "knobs": [
+      "follower.threshold",
+      "follower.gain"
+     ],
+     "switches": [
+      "follower.detector"
+     ],
+     "popup": false,
+     "hp": 6
+    },
+    {
+     "key": "vproc",
+     "rack": "vproc",
+     "title": "v proc",
+     "diagram": "util",
+     "sliders": [],
+     "knobs": [
+      "vproc.gain1",
+      "vproc.gain2",
+      "vproc.offset"
+     ],
+     "switches": [
+      "vproc.invert",
+      "vproc.limit"
+     ],
+     "popup": false,
+     "hp": 4
+    },
+    {
+     "key": "switch",
+     "rack": "switch",
+     "title": "a switch",
+     "diagram": "switch",
+     "sliders": [],
+     "knobs": [],
+     "switches": [
+      "switch.mode",
+      "switch.position",
+      "switch.steps"
+     ],
+     "popup": false,
+     "hp": 4
+    },
+    {
+     "key": "gateDelay",
+     "rack": "gateDelay",
+     "title": "gate delay",
+     "diagram": "util",
+     "sliders": [],
+     "knobs": [
+      "gateDelay.delay",
+      "gateDelay.length"
+     ],
+     "switches": [],
+     "popup": false,
+     "hp": 4
+    },
+    {
+     "key": "mult1",
+     "rack": "mult1",
+     "title": "mult",
+     "diagram": "mult",
+     "sliders": [],
+     "knobs": [],
+     "switches": [],
+     "popup": false,
+     "hp": 4
+    }
+   ]
+  },
+  {
+   "id": "output",
+   "name": "output",
+   "modules": [
+    {
+     "key": "output",
+     "rack": "output",
+     "title": "output",
+     "diagram": "out",
+     "sliders": [
+      "global.masterVolume"
+     ],
+     "knobs": [
+      "global.stereoSpread",
+      "global.instability",
+      "global.masterTune",
+      "global.tempo"
+     ],
+     "switches": [
+      "global.engineMode",
+      "global.oversampling"
+     ],
+     "popup": false,
+     "hp": 8
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,52 @@
+cmake_minimum_required(VERSION 3.20)
+project(VekturDSPTests CXX)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(DSP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../Packages/VekturKit/Sources/VekturDSP)
+
+# Portable C++ sources only (AURenderAdapter.mm is Apple/Objective-C++).
+file(GLOB GRAPH_SOURCES ${DSP_DIR}/graph/*.cpp)
+file(GLOB SEQ_SOURCES ${DSP_DIR}/seq/*.cpp)
+file(GLOB FX_SOURCES ${DSP_DIR}/fx/*.cpp)
+add_library(VekturDSP STATIC ${DSP_DIR}/Kernel.cpp ${DSP_DIR}/KernelMidi.cpp ${DSP_DIR}/CAPI.cpp ${GRAPH_SOURCES} ${SEQ_SOURCES} ${FX_SOURCES})
+target_include_directories(VekturDSP PUBLIC ${DSP_DIR} ${DSP_DIR}/include)
+target_compile_options(VekturDSP PRIVATE -Wall -Wextra -Wpedantic -Werror -Wshadow -Wconversion -Wno-sign-conversion)
+if (APPLE)
+  # fx/FFT.hpp uses vDSP on Apple platforms (Phase 10).
+  target_link_libraries(VekturDSP PUBLIC "-framework Accelerate")
+endif()
+
+set(TESTS test_kernel test_modules test_graph test_modulation test_sequencing test_effects test_midi test_host test_presets test_phase10)
+foreach(t ${TESTS})
+  add_executable(${t} ${t}.cpp)
+  target_link_libraries(${t} PRIVATE VekturDSP pthread)
+endforeach()
+add_executable(make_golden make_golden.cpp)
+add_executable(fxmap fxmap.cpp)
+add_executable(preset_audit preset_audit.cpp)
+target_link_libraries(preset_audit PRIVATE VekturDSP)
+target_link_libraries(fxmap PRIVATE VekturDSP)
+target_link_libraries(make_golden PRIVATE VekturDSP)
+add_executable(render_demo render_demo.cpp)
+target_link_libraries(render_demo PRIVATE VekturDSP)
+
+option(VK_SANITIZE "Build with ASan + UBSan" OFF)
+option(VK_TSAN "Build with ThreadSanitizer" OFF)
+foreach(t VekturDSP ${TESTS} make_golden render_demo fxmap preset_audit)
+  if (VK_SANITIZE)
+    target_compile_options(${t} PRIVATE -fsanitize=address,undefined -fno-omit-frame-pointer)
+    target_link_options(${t} PRIVATE -fsanitize=address,undefined)
+  endif()
+  if (VK_TSAN)
+    # g++ reports a false stringop-overflow in ParameterStore under -fsanitize=thread only.
+    target_compile_options(${t} PRIVATE -fsanitize=thread $<$<CXX_COMPILER_ID:GNU>:-Wno-stringop-overflow>)
+    target_link_options(${t} PRIVATE -fsanitize=thread)
+  endif()
+endforeach()
+
+enable_testing()
+foreach(t ${TESTS})
+  add_test(NAME ${t} COMMAND ${t} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+endforeach()
