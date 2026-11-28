@@ -1,0 +1,363 @@
+{
+ "chapters": [
+  {
+   "number": 1,
+   "slug": "welcome",
+   "title": "Welcome",
+   "screens": [
+    "rack"
+   ],
+   "file": "01-welcome.md"
+  },
+  {
+   "number": 2,
+   "slug": "first-sound",
+   "title": "Getting started: the first sound",
+   "screens": [
+    "rack",
+    "performance"
+   ],
+   "file": "02-first-sound.md"
+  },
+  {
+   "number": 3,
+   "slug": "standalone-and-au",
+   "title": "Standalone app and AUv3 plug-in",
+   "screens": [
+    "settings"
+   ],
+   "file": "03-standalone-and-au.md"
+  },
+  {
+   "number": 4,
+   "slug": "interface",
+   "title": "The interface",
+   "screens": [
+    "rack",
+    "settings"
+   ],
+   "file": "04-interface.md"
+  },
+  {
+   "number": 5,
+   "slug": "signal-flow",
+   "title": "Signal flow",
+   "screens": [
+    "rack",
+    "patch"
+   ],
+   "file": "05-signal-flow.md"
+  },
+  {
+   "number": 6,
+   "slug": "oscillators",
+   "title": "Oscillators VCO 1\u20133",
+   "screens": [
+    "rack"
+   ],
+   "file": "06-oscillators.md"
+  },
+  {
+   "number": 7,
+   "slug": "extra-oscillators",
+   "title": "Extra oscillators VCO 4\u20139",
+   "screens": [
+    "rack",
+    "patch"
+   ],
+   "file": "07-extra-oscillators.md"
+  },
+  {
+   "number": 8,
+   "slug": "noise-ring-mixer",
+   "title": "Noise, ring modulator and mixer",
+   "screens": [
+    "rack",
+    "mixer"
+   ],
+   "file": "08-noise-ring-mixer.md"
+  },
+  {
+   "number": 9,
+   "slug": "filter-a",
+   "title": "Filter A: the multimode filter",
+   "screens": [
+    "rack"
+   ],
+   "file": "09-filter-a.md"
+  },
+  {
+   "number": 10,
+   "slug": "filter-b-routing",
+   "title": "Filter B: the ladder, and filter routing",
+   "screens": [
+    "rack"
+   ],
+   "file": "10-filter-b-routing.md"
+  },
+  {
+   "number": 11,
+   "slug": "specialist-filters",
+   "title": "Specialist filters",
+   "screens": [
+    "rack",
+    "patch"
+   ],
+   "file": "11-specialist-filters.md"
+  },
+  {
+   "number": 12,
+   "slug": "envelopes",
+   "title": "Envelopes EG 1 and EG 2",
+   "screens": [
+    "rack"
+   ],
+   "file": "12-envelopes.md"
+  },
+  {
+   "number": 13,
+   "slug": "vcas",
+   "title": "VCAs",
+   "screens": [
+    "rack"
+   ],
+   "file": "13-vcas.md"
+  },
+  {
+   "number": 14,
+   "slug": "lfos",
+   "title": "LFOs",
+   "screens": [
+    "rack",
+    "modulation"
+   ],
+   "file": "14-lfos.md"
+  },
+  {
+   "number": 15,
+   "slug": "utilities",
+   "title": "Utilities",
+   "screens": [
+    "rack",
+    "patch"
+   ],
+   "file": "15-utilities.md"
+  },
+  {
+   "number": 16,
+   "slug": "patching",
+   "title": "Patching with cables",
+   "screens": [
+    "patch",
+    "rack"
+   ],
+   "file": "16-patching.md"
+  },
+  {
+   "number": 17,
+   "slug": "normals",
+   "title": "Normalled connections",
+   "screens": [
+    "patch"
+   ],
+   "file": "17-normals.md"
+  },
+  {
+   "number": 18,
+   "slug": "patch-canvas",
+   "title": "The patch canvas",
+   "screens": [
+    "patch"
+   ],
+   "file": "18-patch-canvas.md"
+  },
+  {
+   "number": 19,
+   "slug": "mod-matrix",
+   "title": "The modulation matrix",
+   "screens": [
+    "modulation"
+   ],
+   "file": "19-mod-matrix.md"
+  },
+  {
+   "number": 20,
+   "slug": "voices",
+   "title": "Voices, polyphony and unison",
+   "screens": [
+    "performance",
+    "settings"
+   ],
+   "file": "20-voices.md"
+  },
+  {
+   "number": 21,
+   "slug": "instability",
+   "title": "Analogue instability and engine modes",
+   "screens": [
+    "settings",
+    "performance"
+   ],
+   "file": "21-instability.md"
+  },
+  {
+   "number": 22,
+   "slug": "sequencer",
+   "title": "The step sequencer",
+   "screens": [
+    "sequencer"
+   ],
+   "file": "22-sequencer.md"
+  },
+  {
+   "number": 23,
+   "slug": "arpeggiator",
+   "title": "The arpeggiator",
+   "screens": [
+    "arpeggiator"
+   ],
+   "file": "23-arpeggiator.md"
+  },
+  {
+   "number": 24,
+   "slug": "generative",
+   "title": "The generative engine",
+   "screens": [
+    "generative"
+   ],
+   "file": "24-generative.md"
+  },
+  {
+   "number": 25,
+   "slug": "clips",
+   "title": "Note clips and MIDI files",
+   "screens": [
+    "sequencer",
+    "generative"
+   ],
+   "file": "25-clips.md"
+  },
+  {
+   "number": 26,
+   "slug": "effects",
+   "title": "Effects slots",
+   "screens": [
+    "effects"
+   ],
+   "file": "26-effects.md"
+  },
+  {
+   "number": 27,
+   "slug": "effects-bus",
+   "title": "Effects routing: inserts, sends and returns",
+   "screens": [
+    "effects"
+   ],
+   "file": "27-effects-bus.md"
+  },
+  {
+   "number": 28,
+   "slug": "impulse-responses",
+   "title": "Impulse responses",
+   "screens": [
+    "effects"
+   ],
+   "file": "28-impulse-responses.md"
+  },
+  {
+   "number": 29,
+   "slug": "midi-input",
+   "title": "MIDI input, MPE and key zones",
+   "screens": [
+    "midi"
+   ],
+   "file": "29-midi-input.md"
+  },
+  {
+   "number": 30,
+   "slug": "midi-learn",
+   "title": "MIDI Learn and mappings",
+   "screens": [
+    "midi"
+   ],
+   "file": "30-midi-learn.md"
+  },
+  {
+   "number": 31,
+   "slug": "midi-reference",
+   "title": "The MIDI CC and automation reference",
+   "screens": [
+    "midi"
+   ],
+   "file": "31-midi-reference.md"
+  },
+  {
+   "number": 32,
+   "slug": "sync",
+   "title": "Tempo and sync",
+   "screens": [
+    "sequencer",
+    "settings"
+   ],
+   "file": "32-sync.md"
+  },
+  {
+   "number": 33,
+   "slug": "presets",
+   "title": "Presets",
+   "screens": [
+    "presets"
+   ],
+   "file": "33-presets.md"
+  },
+  {
+   "number": 34,
+   "slug": "import-export",
+   "title": "Import and export",
+   "screens": [
+    "presets",
+    "sequencer"
+   ],
+   "file": "34-import-export.md"
+  },
+  {
+   "number": 35,
+   "slug": "recording",
+   "title": "Recording",
+   "screens": [
+    "mixer"
+   ],
+   "file": "35-recording.md"
+  },
+  {
+   "number": 36,
+   "slug": "appearance",
+   "title": "Appearance and panels",
+   "screens": [
+    "settings",
+    "rack"
+   ],
+   "file": "36-appearance.md"
+  },
+  {
+   "number": 37,
+   "slug": "performance-settings",
+   "title": "Performance, battery and app settings",
+   "screens": [
+    "settings",
+    "diagnostics"
+   ],
+   "file": "37-performance-settings.md"
+  },
+  {
+   "number": 38,
+   "slug": "accessibility-privacy",
+   "title": "Accessibility, privacy and troubleshooting",
+   "screens": [
+    "settings",
+    "diagnostics"
+   ],
+   "file": "38-accessibility-privacy.md"
+  }
+ ]
+}
