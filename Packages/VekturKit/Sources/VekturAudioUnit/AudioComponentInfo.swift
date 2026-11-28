@@ -7,8 +7,8 @@ import AudioToolbox
 public enum AudioComponentInfo {
     public static let typeCode: FourCharCode = kAudioUnitType_MusicDevice      // 'aumu'
     public static let subtypeCode: FourCharCode = fourCC("VkMd")
-    public static let manufacturerCode: FourCharCode = fourCC("DMTc")            // must contain an uppercase letter
-    public static let componentName = "DMT Cymatics: Vektur Modular"
+    public static let manufacturerCode: FourCharCode = fourCC("DMTm")            // must contain an uppercase letter
+    public static let componentName = "Dream Music Temple: Vektur Modular"
     /// Encoded as Info.plist "version": major << 16 | minor << 8 | patch.
     public static let componentVersion: UInt32 = (1 << 16) | (0 << 8) | 0
 

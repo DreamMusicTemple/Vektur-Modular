@@ -78,7 +78,7 @@ A profile is a JSON file:
 
 ```json
 {
-  "format": "com.dmtcymatics.vekturmodular.midi-profile",
+  "format": "com.dreammusictemple.vekturmodular.midi-profile",
   "version": 1,
   "name": "My controller",
   "device": "Knobs 16",

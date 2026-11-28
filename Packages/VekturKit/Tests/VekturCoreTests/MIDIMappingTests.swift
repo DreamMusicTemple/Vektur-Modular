@@ -56,7 +56,7 @@ final class MIDIMappingTests: XCTestCase {
         ])
         let data = try p.encoded()
         let json = try XCTUnwrap(String(data: data, encoding: .utf8))
-        XCTAssertTrue(json.contains("\"format\" : \"com.dmtcymatics.vekturmodular.midi-profile\""))
+        XCTAssertTrue(json.contains("\"format\" : \"com.dreammusictemple.vekturmodular.midi-profile\""))
         let back = try MIDIHardwareProfile.decode(data)
         XCTAssertEqual(back.name, "Desk"); XCTAssertEqual(back.device, "Knobs 16")
         XCTAssertEqual(back.mappings.first?.relative, .signedBit)
@@ -64,11 +64,11 @@ final class MIDIMappingTests: XCTestCase {
         XCTAssertEqual(back.mappings.first?.minimum, 0.9)
 
         XCTAssertThrowsError(try MIDIHardwareProfile.decode(Data(#"{"format":"other","mappings":[]}"#.utf8)))
-        XCTAssertThrowsError(try MIDIHardwareProfile.decode(Data(#"{"format":"com.dmtcymatics.vekturmodular.midi-profile","version":9,"mappings":[]}"#.utf8))) {
+        XCTAssertThrowsError(try MIDIHardwareProfile.decode(Data(#"{"format":"com.dreammusictemple.vekturmodular.midi-profile","version":9,"mappings":[]}"#.utf8))) {
             XCTAssertEqual($0 as? MIDIHardwareProfile.ProfileError, .newerVersion(9))
         }
         // Unknown keys and one broken entry are tolerated.
-        let lenient = #"{"format":"com.dmtcymatics.vekturmodular.midi-profile","version":1,"name":"X","future":1,"#
+        let lenient = #"{"format":"com.dreammusictemple.vekturmodular.midi-profile","version":1,"name":"X","future":1,"#
             + #""mappings":[{"source":"cc","number":5,"parameter":"global.glide","extra":true},{"source":"warp","parameter":"x"}]}"#
         XCTAssertEqual(try MIDIHardwareProfile.decode(Data(lenient.utf8)).mappings.count, 1)
     }

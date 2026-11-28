@@ -43,7 +43,7 @@ Every signal path is delay-compensated. The engine reports one constant latency 
   - A slot whose input has been silent for longer than its tail skips processing.
   - A slot that produces NaN or Inf resets itself and raises the telemetry flag once.
   - Effects run before the master volume, so tails follow the volume.
-- **IRs are files referenced by content hash** (ARCHITECTURE §7). User IRs are copied into a shared library, `group.com.dmtcymatics.vekturmodular`, so the app and the extension see the same files. The state stores only the references: slot, SHA-256, name, frames, rate and channels. A project moved to a device without the file falls back to the built-in IR and shows a warning.
+- **IRs are files referenced by content hash** (ARCHITECTURE §7). User IRs are copied into a shared library, `group.com.dreammusictemple.vekturmodular`, so the app and the extension see the same files. The state stores only the references: slot, SHA-256, name, frames, rate and channels. A project moved to a device without the file falls back to the built-in IR and shows a warning.
 
 ## Files
 **Created:** in `VekturDSP/fx/`:
@@ -144,5 +144,5 @@ Eight heavy slots together measured 11.2 %.
 - In the AUv3 extension, the file importer used for "Load IR…" depends on the host. This goes into the Phase 7 DAW matrix.
 
 ## Next
-- **Before building:** register the App Group `group.com.dmtcymatics.vekturmodular` for the team in the developer portal. Both targets now request it.
+- **Before building:** register the App Group `group.com.dreammusictemple.vekturmodular` for the team in the developer portal. Both targets now request it.
 - Phase 7: MIDI and AUv3. That covers the MIDI engine, MIDI Learn, host transport and Ableton Link, and the DAW test matrix, including effects latency and tail behaviour across hosts.

@@ -4,10 +4,10 @@
 DEVELOPMENT_TEAM =
 
 // Reverse-DNS prefix you own. The app becomes $(VK_BUNDLE_ID_PREFIX).vekturmodular
-// and the AUv3 $(VK_BUNDLE_ID_PREFIX).vekturmodular.au (extension IDs must be
+// and the AUv3 $(VK_BUNDLE_ID_PREFIX).vekturmodular.auv3 (extension IDs must be
 // prefixed by the containing app's ID). Change BEFORE the first TestFlight upload;
 // it is permanent afterwards.
-VK_BUNDLE_ID_PREFIX = com.dmtcymatics
+VK_BUNDLE_ID_PREFIX = com.dreammusictemple
 
 CODE_SIGN_STYLE = Automatic
 

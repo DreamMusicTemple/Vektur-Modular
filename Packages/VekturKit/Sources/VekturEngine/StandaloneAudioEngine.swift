@@ -33,7 +33,7 @@ public final class StandaloneAudioEngine {
     private var avUnit: AVAudioUnit?
     private var observers: [NSObjectProtocol] = []
     private static let backgroundKey = "settings.backgroundAudio"
-    private static let log = Logger(subsystem: "com.dmtcymatics.vekturmodular", category: "Engine")
+    private static let log = Logger(subsystem: "com.dreammusictemple.vekturmodular", category: "Engine")
 
     public init() {}
 

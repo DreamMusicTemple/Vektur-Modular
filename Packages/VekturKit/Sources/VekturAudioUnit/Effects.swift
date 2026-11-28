@@ -83,7 +83,7 @@ public struct FxSlotAddresses: Sendable, Hashable {
 /// library lives in the app-group container when it exists (shared by the
 /// app and the AUv3 extension), else in this process's Application Support.
 public enum ImpulseResponseLibrary {
-    public static let appGroup = "group.com.dmtcymatics.vekturmodular"
+    public static let appGroup = "group.com.dreammusictemple.vekturmodular"
 
     public static var directory: URL {
         let fm = FileManager.default
@@ -230,4 +230,4 @@ extension VekturModularAudioUnit {
     }
 }
 
-let effectsLog = Logger(subsystem: "com.dmtcymatics.vekturmodular", category: "Effects")
+let effectsLog = Logger(subsystem: "com.dreammusictemple.vekturmodular", category: "Effects")

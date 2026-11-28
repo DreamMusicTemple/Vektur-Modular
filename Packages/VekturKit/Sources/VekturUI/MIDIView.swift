@@ -266,7 +266,7 @@ public struct MIDIView: View {
 
 /// .vekturmidi profile document (JSON).
 struct ProfileDocument: FileDocument {
-    static let type = UTType(exportedAs: "com.dmtcymatics.vekturmodular.midi-profile", conformingTo: .json)
+    static let type = UTType(exportedAs: "com.dreammusictemple.vekturmodular.midi-profile", conformingTo: .json)
     static var readableContentTypes: [UTType] { [type, .json] }
     var data: Data
     init(data: Data) { self.data = data }

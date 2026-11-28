@@ -377,7 +377,7 @@ function buildMidi() {
   $('#stdProfile').addEventListener('click', () => { for (const m of STANDARD) assignMapping({ ...m }); toast('Standard layout added'); });
   $('#copyProfile').addEventListener('click', async () => { const txt = JSON.stringify(profile(), null, 1); $('#profileText').value = txt; try { await navigator.clipboard.writeText(txt); toast('Profile copied'); } catch { toast('Profile is in the text box'); } });
   $('#loadProfile').addEventListener('click', () => {
-    try { const j = JSON.parse($('#profileText').value); if (j.format !== 'com.dmtcymatics.vekturmodular.midi-profile') throw 0; if ((j.version || 1) > 1) { toast('That profile needs a newer version'); return; }
+    try { const j = JSON.parse($('#profileText').value); if (j.format !== 'com.dreammusictemple.vekturmodular.midi-profile') throw 0; if ((j.version || 1) > 1) { toast('That profile needs a newer version'); return; }
       let n = 0; for (const m of j.mappings || []) if (P[m.parameter] && SRC.includes(m.source)) { assignMapping(m); n++; } toast(`Imported ${n} mappings`); }
     catch { toast('Not a Vektur MIDI profile'); }
   });
@@ -385,7 +385,7 @@ function buildMidi() {
 }
 const STANDARD = [[74, 'vcfB.cutoff'], [71, 'vcfB.resonance'], [73, 'eg2.attack'], [75, 'eg2.decay'], [72, 'eg2.release'], [76, 'lfo1.rate'], [5, 'global.glide'], [7, 'global.masterVolume', true]]
   .map(([n, p, pk]) => ({ source: 'cc', number: n, parameter: p, minimum: 0, maximum: 1, mode: 'absolute', relative: 'twosComplement', pickup: !!pk, sensitivity: 1 / 128 }));
-function profile() { return { format: 'com.dmtcymatics.vekturmodular.midi-profile', version: 1, name: 'Web test mappings', mappings }; }
+function profile() { return { format: 'com.dreammusictemple.vekturmodular.midi-profile', version: 1, name: 'Web test mappings', mappings }; }
 function assignMapping(m) { mappings = mappings.filter((x) => x.parameter !== m.parameter); mappings.push(m); store.set('mappings', mappings); publishMappings(); renderMappings(); }
 function publishMappings() {
   engine.post({ t: 'maps', list: mappings.filter((m) => P[m.parameter]).map((m) => ({ source: SRC.indexOf(m.source), channel: m.channel == null ? 255 : m.channel, number: m.number || 0,
