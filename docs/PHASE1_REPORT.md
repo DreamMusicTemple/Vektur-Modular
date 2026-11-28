@@ -114,7 +114,7 @@ open VekturModular.xcodeproj           # build VekturModular_iOS / VekturModular
 cd Packages/VekturKit && swift test # Swift test suites (macOS)
 cd ../../DSPTests && cmake -S . -B build && cmake --build build && ./build/test_kernel
 # 2. after running the macOS app once (registers the extension):
-auval -v aumu VkMd DMTc
+auval -v aumu VkMd DMTm
 ```
 Then load it in AUM / GarageBand on the iPad, play, save the project, reopen,
 and confirm Master Volume and Polyphony restored. Send me any compiler errors

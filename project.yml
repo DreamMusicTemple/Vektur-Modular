@@ -4,7 +4,7 @@
 name: VekturModular
 
 options:
-  bundleIdPrefix: com.dmtcymatics
+  bundleIdPrefix: com.dreammusictemple
   # TestFlight / App Store builds use the iOS 27 / macOS 27 SDK or later
   # (enforced for Release by tools/check_sdk.sh in both targets).
   xcodeVersion: "27.0"
@@ -92,41 +92,41 @@ targets:
         NSLocalNetworkUsageDescription: Vektur Modular uses the local network to sync tempo and start/stop with other Ableton Link apps.
         # Phase 7: MIDI Learn profiles (.vekturmidi, JSON)
         UTExportedTypeDeclarations:
-          - UTTypeIdentifier: com.dmtcymatics.vekturmodular.midi-profile
+          - UTTypeIdentifier: com.dreammusictemple.vekturmodular.midi-profile
             UTTypeDescription: Vektur MIDI Profile
             UTTypeConformsTo: [public.json]
             UTTypeTagSpecification:
               public.filename-extension: [vekturmidi]
-          - UTTypeIdentifier: com.dmtcymatics.vekturmodular.preset
+          - UTTypeIdentifier: com.dreammusictemple.vekturmodular.preset
             UTTypeDescription: Vektur Preset
             UTTypeConformsTo: [public.json]
             UTTypeTagSpecification:
               public.filename-extension: [vekturpreset]
-          - UTTypeIdentifier: com.dmtcymatics.vekturmodular.project
+          - UTTypeIdentifier: com.dreammusictemple.vekturmodular.project
             UTTypeDescription: Vektur Project
             UTTypeConformsTo: [public.json]
             UTTypeTagSpecification:
               public.filename-extension: [vekturproject]
-          - UTTypeIdentifier: com.dmtcymatics.vekturmodular.pattern
+          - UTTypeIdentifier: com.dreammusictemple.vekturmodular.pattern
             UTTypeDescription: Vektur Pattern
             UTTypeConformsTo: [public.json]
             UTTypeTagSpecification:
               public.filename-extension: [vekturpattern]
         CFBundleDocumentTypes:
           - CFBundleTypeName: Vektur MIDI Profile
-            LSItemContentTypes: [com.dmtcymatics.vekturmodular.midi-profile]
+            LSItemContentTypes: [com.dreammusictemple.vekturmodular.midi-profile]
             CFBundleTypeRole: Viewer
             LSHandlerRank: Owner
           - CFBundleTypeName: Vektur Preset
-            LSItemContentTypes: [com.dmtcymatics.vekturmodular.preset]
+            LSItemContentTypes: [com.dreammusictemple.vekturmodular.preset]
             CFBundleTypeRole: Editor
             LSHandlerRank: Owner
           - CFBundleTypeName: Vektur Project
-            LSItemContentTypes: [com.dmtcymatics.vekturmodular.project]
+            LSItemContentTypes: [com.dreammusictemple.vekturmodular.project]
             CFBundleTypeRole: Editor
             LSHandlerRank: Owner
           - CFBundleTypeName: Vektur Pattern
-            LSItemContentTypes: [com.dmtcymatics.vekturmodular.pattern]
+            LSItemContentTypes: [com.dreammusictemple.vekturmodular.pattern]
             CFBundleTypeRole: Editor
             LSHandlerRank: Owner
     entitlements:
@@ -135,7 +135,7 @@ targets:
         com.apple.security.app-sandbox: true   # ignored on iOS, required on macOS
         com.apple.security.files.user-selected.read-write: true
         # Phase 6: shared user-IR library (register the group for the team first)
-        com.apple.security.application-groups: [group.com.dmtcymatics.vekturmodular]
+        com.apple.security.application-groups: [group.com.dreammusictemple.vekturmodular]
         # Phase 7 (macOS): CoreMIDI virtual source + Link sockets in the sandbox.
         com.apple.security.network.client: true
         com.apple.security.network.server: true
@@ -165,7 +165,7 @@ targets:
       - sdk: CoreAudioKit.framework
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: $(VK_BUNDLE_ID_PREFIX).vekturmodular.au
+        PRODUCT_BUNDLE_IDENTIFIER: $(VK_BUNDLE_ID_PREFIX).vekturmodular.auv3
         PRODUCT_NAME: VekturModularAU
         PRODUCT_MODULE_NAME: VekturModularAU
         TARGETED_DEVICE_FAMILY: "1,2"
@@ -175,22 +175,22 @@ targets:
       properties:
         CFBundleDisplayName: Vektur Modular
         UTImportedTypeDeclarations:
-          - UTTypeIdentifier: com.dmtcymatics.vekturmodular.midi-profile
+          - UTTypeIdentifier: com.dreammusictemple.vekturmodular.midi-profile
             UTTypeDescription: Vektur MIDI Profile
             UTTypeConformsTo: [public.json]
             UTTypeTagSpecification:
               public.filename-extension: [vekturmidi]
-          - UTTypeIdentifier: com.dmtcymatics.vekturmodular.preset
+          - UTTypeIdentifier: com.dreammusictemple.vekturmodular.preset
             UTTypeDescription: Vektur Preset
             UTTypeConformsTo: [public.json]
             UTTypeTagSpecification:
               public.filename-extension: [vekturpreset]
-          - UTTypeIdentifier: com.dmtcymatics.vekturmodular.project
+          - UTTypeIdentifier: com.dreammusictemple.vekturmodular.project
             UTTypeDescription: Vektur Project
             UTTypeConformsTo: [public.json]
             UTTypeTagSpecification:
               public.filename-extension: [vekturproject]
-          - UTTypeIdentifier: com.dmtcymatics.vekturmodular.pattern
+          - UTTypeIdentifier: com.dreammusictemple.vekturmodular.pattern
             UTTypeDescription: Vektur Pattern
             UTTypeConformsTo: [public.json]
             UTTypeTagSpecification:
@@ -203,8 +203,8 @@ targets:
               # MUST match VekturAudioUnit/AudioComponentInfo.swift. Never change after release.
               - type: aumu
                 subtype: VkMd
-                manufacturer: DMTc
-                name: "DMT Cymatics: Vektur Modular"
+                manufacturer: DMTm
+                name: "Dream Music Temple: Vektur Modular"
                 description: Vintage modular analogue synthesiser
                 version: 65536        # 1.0.0 → (1<<16)|(0<<8)|0
                 sandboxSafe: true
@@ -214,7 +214,7 @@ targets:
       properties:
         com.apple.security.app-sandbox: true   # mandatory for AUv3 on macOS
         com.apple.security.files.user-selected.read-write: true   # load IR files; import/export MIDI profiles (Phase 7)
-        com.apple.security.application-groups: [group.com.dmtcymatics.vekturmodular]
+        com.apple.security.application-groups: [group.com.dreammusictemple.vekturmodular]
 
   # Package tests (VekturCoreTests, VekturDSPTests, VekturAudioUnitTests) run with
   #   cd Packages/VekturKit && swift test

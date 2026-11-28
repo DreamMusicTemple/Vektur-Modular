@@ -12,7 +12,7 @@ Requires **Xcode 27+ (iOS 27 / macOS 27 SDK)** for TestFlight and App Store buil
 ```bash
 brew install xcodegen
 # set DEVELOPMENT_TEAM in Config/Shared.xcconfig and register the App Group
-# group.com.dmtcymatics.vekturmodular for the team (shared IR library, global MIDI mappings)
+# group.com.dreammusictemple.vekturmodular for the team (shared IR library, global MIDI mappings)
 # optional: LinkKit.xcframework + multicast entitlement for Ableton Link (docs/MIDI.md)
 xcodegen generate && open VekturModular.xcodeproj
 ```

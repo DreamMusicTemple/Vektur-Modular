@@ -274,7 +274,7 @@ a normalled input replaces it (§8).
 ## 7. AUv3 state-management plan
 
 **Format.** `InstrumentState` JSON (sorted keys), stored in `fullState` under
-`com.dmtcymatics.vekturmodular.state`, alongside the keys `AUAudioUnit` writes
+`com.dreammusictemple.vekturmodular.state`, alongside the keys `AUAudioUnit` writes
 itself (type/subtype/manufacturer/version). Standalone sessions and user/
 factory presets use the identical blob.
 
@@ -378,7 +378,7 @@ to fit it.
 | R-9 | **Swift 6 strict concurrency vs AudioToolbox APIs** (non-Sendable AU types). | Compile friction. | Narrow `@unchecked Sendable` wrappers (documented), `@preconcurrency` imports, zero Swift on the render thread. |
 | R-10 | **Patch-canvas rendering at 500% with animated cables** | Battery drain, frame drops, competing with audio. | Metal renderer, telemetry decimated to display rate, Battery Saving tiers, never block audio. |
 | R-11 | **Ableton Link** licence/entitlement lead time | Phase 7 slip. | Request multicast entitlement and confirm LinkKit licence now. **Phase 7:** Link code is in place behind `canImport(LinkKit)`; still blocked on both. |
-| R-12 | **Branding / trade-mark.** Resolved for naming: the working title contained a reference model number and was replaced by **Vektur Modular** before any App Store Connect record existed. Bundle IDs `com.dmtcymatics.vekturmodular` / `.au` and AU codes `aumu VkMd DMTc` contain no hardware designation. | Residual: App Review metadata (keywords, description, screenshots) must also avoid manufacturer/model names. | Keep manufacturer names to `ProductInfo.legalDisclaimer` only; counsel reviews the disclaimer and store metadata before release. Before the first upload, confirm the name is free in App Store Connect (names are unique store-wide) and search trade-mark registers. |
+| R-12 | **Branding / trade-mark.** Resolved for naming: the working title contained a reference model number and was replaced by **Vektur Modular** before any App Store Connect record existed. Bundle IDs `com.dreammusictemple.vekturmodular` / `.au` and AU codes `aumu VkMd DMTm` contain no hardware designation. | Residual: App Review metadata (keywords, description, screenshots) must also avoid manufacturer/model names. | Keep manufacturer names to `ProductInfo.legalDisclaimer` only; counsel reviews the disclaimer and store metadata before release. Before the first upload, confirm the name is free in App Store Connect (names are unique store-wide) and search trade-mark registers. |
 | R-13 | **Claims of "authentic circuit modelling"** without circuit references. | Credibility / marketing risk. | Describe as "circuit-informed"; document each model's basis and validation in `docs/dsp/`. |
 | R-14 | **No on-device testing yet** | Unknown latency/CPU on real hardware. | Phase 1 diagnostics console reports real render load; device matrix in PHASES.md. |
 

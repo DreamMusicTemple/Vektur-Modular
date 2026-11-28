@@ -5,6 +5,29 @@ GitHub builds, signs and uploads the app for you
 one-time Apple account setup below, about 20 minutes, in a browser. An iPad or
 iPhone is enough.
 
+## Identifiers: shared vs unique
+Shared by all Dream Music Temple apps (set up once, reused):
+
+| Item | Value |
+|---|---|
+| Team ID, App Store Connect API key (Key ID, Issuer ID, .p8) | the same as Vektur Vortex |
+| Signing certificate and profiles | made automatically by the build, shared by the team |
+| Bundle ID prefix | `com.dreammusictemple` (as Vortex) |
+| AUv3 manufacturer code and host name | `DMTm`, shown as "Dream Music Temple: …" (as Vortex), so hosts list all your plug-ins together |
+
+Unique to Vektur Modular (never reuse in another app):
+
+| Item | Value |
+|---|---|
+| App bundle ID | `com.dreammusictemple.vekturmodular` |
+| AUv3 bundle ID | `com.dreammusictemple.vekturmodular.auv3` |
+| App group | `group.com.dreammusictemple.vekturmodular` |
+| AUv3 type / subtype | `aumu` / `VkMd` (Vortex is `Vvtx`) |
+| Document types | `com.dreammusictemple.vekturmodular.preset`, `.project`, `.pattern`, `.midi-profile` |
+| App Store name / SKU | Vektur Modular / `VEKTURMODULAR` |
+
+Every new app gets its own subtype (four characters, at least one uppercase), bundle IDs, app group and SKU.
+
 ## 1. Find your Team ID
 1. Go to developer.apple.com/account and choose **Membership details**.
 2. Copy the **Team ID** (10 characters, for example `A1B2C3D4E5`).
@@ -20,25 +43,25 @@ Go to developer.apple.com/account → **Certificates, Identifiers & Profiles →
 
 1. **+ → App Groups → Continue.**
    - Description: `Vektur Modular`
-   - Identifier: `group.com.dmtcymatics.vekturmodular`
+   - Identifier: `group.com.dreammusictemple.vekturmodular`
 2. **+ → App IDs → App → Continue.**
    - Description: `Vektur Modular`
-   - Bundle ID: Explicit, `com.dmtcymatics.vekturmodular`
+   - Bundle ID: Explicit, `com.dreammusictemple.vekturmodular`
    - Under Capabilities, tick **App Groups**, then *Configure* and choose the group from step 1.
    - Continue, then Register.
 3. Repeat step 2 for the plug-in:
    - Description: `Vektur Modular AU`
-   - Bundle ID: `com.dmtcymatics.vekturmodular.au`
+   - Bundle ID: `com.dreammusictemple.vekturmodular.auv3`
    - Tick **App Groups** and choose the same group.
 
-The bundle ID prefix `com.dmtcymatics` is permanent once the first build is uploaded. To use a different prefix, change it now in `Config/Shared.xcconfig` (`VK_BUNDLE_ID_PREFIX`) and in the app group name in `project.yml`, and tell me so the two stay consistent.
+The bundle ID prefix `com.dreammusictemple` is permanent once the first build is uploaded. To use a different prefix, change it now in `Config/Shared.xcconfig` (`VK_BUNDLE_ID_PREFIX`) and in the app group name in `project.yml`, and tell me so the two stay consistent.
 
 ## 4. Create the app record
 In App Store Connect, go to **Apps → + → New App**.
 - **Platforms:** iOS. Also tick macOS if you want the Mac version.
 - **Name:** `Vektur Modular`. Names must be unique on the App Store; if it is taken, try `Vektur Modular Synth`. This name can differ from the app's on-device name.
 - **Primary language:** English (U.K.) or English (U.S.).
-- **Bundle ID:** `com.dmtcymatics.vekturmodular`
+- **Bundle ID:** `com.dreammusictemple.vekturmodular`
 - **SKU:** `VEKTURMODULAR`
 - **User access:** Full access
 

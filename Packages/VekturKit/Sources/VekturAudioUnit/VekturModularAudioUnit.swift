@@ -22,7 +22,7 @@ public final class VekturModularAudioUnit: AUAudioUnit, @unchecked Sendable {
 
     /// State sections owned by later-phase modules round-trip through here.
     private let stateLock = OSAllocatedUnfairLock(initialState: InstrumentState.default)
-    private static let log = Logger(subsystem: "com.dmtcymatics.vekturmodular", category: "AudioUnit")
+    private static let log = Logger(subsystem: "com.dreammusictemple.vekturmodular", category: "AudioUnit")
     /// vk_kernel_set_patch has a single-writer contract; hosts (fullState) and
     /// the UI may call from different threads, so patch publication is serialised.
     /// Never taken on the render thread.

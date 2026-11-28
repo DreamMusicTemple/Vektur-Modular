@@ -13,7 +13,7 @@ Every phase ends compilable, with a phase report in `docs/PHASEn_REPORT.md`.
 - 🟡 Standalone app hosting the AU in-process; audio session, interruptions, route/config changes, background toggle, session persistence
 - 🟡 Standalone CoreMIDI input (all sources, hot-plug)
 - 🟡 Swift tests: state codec/migration, registry stability, C bridge, AU lifecycle/render/state
-- 🔵 `auval -v aumu VkMd DMTc` passes (macOS)
+- 🔵 `auval -v aumu VkMd DMTm` passes (macOS)
 - 🔵 Loads, plays, saves/restores in AUM, GarageBand, Logic Pro (iPad + Mac), Cubasis
 - 🔵 Device check: iPhone + iPad, measured render load and I/O latency recorded
 

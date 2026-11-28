@@ -11,7 +11,7 @@ public enum ExchangeKind: String, Codable, Sendable, CaseIterable {
     public var fileExtension: String {
         switch self { case .preset: return "vekturpreset"; case .project: return "vekturproject"; case .pattern: return "vekturpattern" }
     }
-    public var uniformTypeIdentifier: String { "com.dmtcymatics.vekturmodular.\(fileExtension.dropFirst(6))" }
+    public var uniformTypeIdentifier: String { "com.dreammusictemple.vekturmodular.\(fileExtension.dropFirst(6))" }
     public var displayName: String { switch self { case .preset: return "Preset"; case .project: return "Project"; case .pattern: return "Pattern" } }
 }
 

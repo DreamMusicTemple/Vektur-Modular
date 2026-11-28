@@ -62,7 +62,7 @@ public final class MIDIInputService {
     private var port = MIDIPortRef()
     private var virtualSource = MIDIEndpointRef()
     private let forwarder = MIDIForwarder()
-    private static let log = Logger(subsystem: "com.dmtcymatics.vekturmodular", category: "MIDI")
+    private static let log = Logger(subsystem: "com.dreammusictemple.vekturmodular", category: "MIDI")
     public private(set) var connectedSourceNames: [String] = []
     /// The virtual source carrying the audio unit's MIDI output (0 = none).
     public var outputEndpoint: MIDIEndpointRef { virtualSource }

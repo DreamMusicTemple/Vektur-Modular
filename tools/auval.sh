@@ -7,7 +7,7 @@
 # Exit status is non-zero on any failure. Logs go to build/auval/.
 set -euo pipefail
 
-TYPE=aumu SUBTYPE=VkMd MANU=DMTc     # must match AudioComponentInfo.swift
+TYPE=aumu SUBTYPE=VkMd MANU=DMTm     # must match AudioComponentInfo.swift
 OUT="$(cd "$(dirname "$0")/.." && pwd)/build/auval"
 mkdir -p "$OUT"
 

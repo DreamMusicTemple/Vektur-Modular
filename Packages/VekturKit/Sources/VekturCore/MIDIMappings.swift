@@ -214,7 +214,7 @@ private struct FailableMapping: Decodable {
 
 /// A portable controller profile (JSON).
 public struct MIDIHardwareProfile: Codable, Sendable, Equatable {
-    public static let formatIdentifier = "com.dmtcymatics.vekturmodular.midi-profile"
+    public static let formatIdentifier = "com.dreammusictemple.vekturmodular.midi-profile"
     public static let currentVersion = 1
     public static let fileExtension = "vekturmidi"
 

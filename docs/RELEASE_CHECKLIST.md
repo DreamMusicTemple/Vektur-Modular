@@ -3,11 +3,11 @@
 ## Build
 - [ ] **Xcode 27 or later, iOS 27 / macOS 27 SDK.** This is required for TestFlight and the App Store, and is enforced: `tools/check_sdk.sh` runs as a pre-build phase in the app and the AUv3 target, and fails any Release build made with an older SDK. `project.yml` sets `xcodeVersion: "27.0"`. The deployment targets stay at iOS 17 and macOS 14.
 - [ ] `xcodegen generate`; set `DEVELOPMENT_TEAM` and the bundle prefix in `Config/Shared.xcconfig` (the prefix is permanent after the first upload).
-- [ ] Register the app group `group.com.dmtcymatics.vekturmodular` for the team.
+- [ ] Register the app group `group.com.dreammusictemple.vekturmodular` for the team.
 - [ ] Versions: `MARKETING_VERSION` 1.0.0; AU component version **65536**, which must equal `AudioComponentInfo.componentVersion`. Raise the build number for every upload.
 - [ ] `swift test` in `Packages/VekturKit`, which runs VekturCore, VekturDSP (including the vDSP FFT self-test) and the AU tests.
 - [ ] `DSPTests`: all 10 suites in Release, ASan + UBSan and TSan (`cmake -DVK_SANITIZE=ON` / `-DVK_TSAN=ON`).
-- [ ] `auval -v aumu VkMd DMTc` passes (`tools/auval.sh`) on macOS.
+- [ ] `auval -v aumu VkMd DMTm` passes (`tools/auval.sh`) on macOS.
 
 ## Store metadata
 - [ ] App Privacy: "Data Not Collected" (docs/APP_STORE_PRIVACY.md).

@@ -18,7 +18,7 @@ public enum StateCodec {
     public static let maxBytes = 8 * 1024 * 1024
 
     /// Key under which the state blob lives inside AUAudioUnit.fullState.
-    public static let fullStateKey = "com.dmtcymatics.vekturmodular.state"
+    public static let fullStateKey = "com.dreammusictemple.vekturmodular.state"
 
     public static func encode(_ state: InstrumentState) throws -> Data {
         let enc = JSONEncoder()

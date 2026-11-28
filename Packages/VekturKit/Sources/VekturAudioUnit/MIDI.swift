@@ -113,13 +113,13 @@ public final class GlobalMIDIMappings: @unchecked Sendable {
 final class MIDIRuntime: @unchecked Sendable {
     let state = OSAllocatedUnfairLock(uncheckedState: Pending())
     struct Pending { var learn: MIDILearnRequest?; var timer: DispatchSourceTimer? }
-    let queue = DispatchQueue(label: "com.dmtcymatics.vekturmodular.midi", qos: .userInitiated)
+    let queue = DispatchQueue(label: "com.dreammusictemple.vekturmodular.midi", qos: .userInitiated)
     let global = GlobalMIDIMappings.shared
 }
 
 extension VekturModularAudioUnit {
     public static let midiEventNotification = Notification.Name("VekturModularMIDIEvent")
-    static let midiLog = Logger(subsystem: "com.dmtcymatics.vekturmodular", category: "MIDI")
+    static let midiLog = Logger(subsystem: "com.dreammusictemple.vekturmodular", category: "MIDI")
 
     // MARK: Mappings
 
