@@ -52,7 +52,7 @@ In the repository DreamMusicTemple/Vektur-Modular, go to **Settings → Secrets 
 | `ASC_PRIVATE_KEY` | open the `.p8` file in a text editor and paste all of it, including the `-----BEGIN PRIVATE KEY-----` and `-----END PRIVATE KEY-----` lines |
 | `APPLE_TEAM_ID` | the Team ID from step 1 |
 
-These are the same values as your Vektur Vortex repo uses, but secrets don't copy between repositories, so add them here too.
+These are the same values as your Vektur Vortex repo uses, but secrets don't copy between repositories, so add them here too. The Vortex names work as well: `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID` and `APP_STORE_CONNECT_PRIVATE_KEY` can be used in place of the three `ASC_*` names. `APPLE_TEAM_ID` is the same in both.
 
 ## 6. Run the build
 1. In the repository, open **Actions → TestFlight → Run workflow**.

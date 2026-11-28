@@ -7,11 +7,12 @@
 # Start it: Actions → "TestFlight" → Run workflow (choose iOS, macOS or both),
 # or push a tag such as v1.0.0.
 #
-# Repository secrets (Settings → Secrets and variables → Actions):
-#   ASC_KEY_ID        App Store Connect API key ID (10 characters)
-#   ASC_ISSUER_ID     Issuer ID (UUID shown above the keys list)
-#   ASC_PRIVATE_KEY   the whole text of AuthKey_XXXXXXXXXX.p8, BEGIN/END lines included
-#   APPLE_TEAM_ID     your 10-character Team ID (Membership details)
+# Repository secrets (Settings → Secrets and variables → Actions) — the same
+# key as Vektur Vortex; either naming used in the Vortex repo works:
+#   ASC_KEY_ID      or APP_STORE_CONNECT_KEY_ID       API key ID (10 characters)
+#   ASC_ISSUER_ID   or APP_STORE_CONNECT_ISSUER_ID    Issuer ID (UUID above the keys list)
+#   ASC_PRIVATE_KEY or APP_STORE_CONNECT_PRIVATE_KEY  whole AuthKey_XXXXXXXXXX.p8 text, BEGIN/END lines included
+#   APPLE_TEAM_ID                                     10-character Team ID (Membership details)
 # The key needs the Admin role so Xcode can create the distribution
 # certificate and profiles itself ("cloud-managed signing").
 name: TestFlight
@@ -76,22 +77,22 @@ jobs:
 
       - name: Check secrets
         env:
-          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
-          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
-          ASC_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID || secrets.APP_STORE_CONNECT_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID || secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          ASC_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY || secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
           missing=""
           for v in ASC_KEY_ID ASC_ISSUER_ID ASC_PRIVATE_KEY APPLE_TEAM_ID; do [ -n "${!v}" ] || missing="$missing $v"; done
-          if [ -n "$missing" ]; then echo "::error::Missing repository secrets:$missing (see the top of this file)"; exit 1; fi
+          if [ -n "$missing" ]; then echo "::error::Missing repository secrets:$missing (ASC_* or APP_STORE_CONNECT_* names both work; see the top of this file)"; exit 1; fi
 
       - name: Install XcodeGen
         run: brew install xcodegen
 
       - name: API key and team
         env:
-          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
-          ASC_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID || secrets.APP_STORE_CONNECT_KEY_ID }}
+          ASC_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY || secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
           mkdir -p "$RUNNER_TEMP/keys"
@@ -105,8 +106,8 @@ jobs:
 
       - name: Archive (Release; tools/check_sdk.sh enforces the 27 SDK)
         env:
-          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
-          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID || secrets.APP_STORE_CONNECT_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID || secrets.APP_STORE_CONNECT_ISSUER_ID }}
         run: |
           set -o pipefail
           xcodebuild archive \
@@ -120,8 +121,8 @@ jobs:
 
       - name: Export and upload to App Store Connect
         env:
-          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
-          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID || secrets.APP_STORE_CONNECT_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID || secrets.APP_STORE_CONNECT_ISSUER_ID }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
           set -o pipefail
